@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<X-PlaneToSimulinkInterface>
+    <!--name - block name, access- specifiy whether your Simulink writes to X-Plane(write) or reads from X-Plane(read)-->
+    <simulinkBlock name = "IMU" access = 'read'>
+        <variable>
+            <name>p</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/P_rad</Dataref>
+        </variable>
+        <variable>
+            <name>q</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/Q_rad</Dataref>
+        </variable>
+        <variable>
+            <name>r</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/R_rad</Dataref>
+        </variable>
+        <variable>
+            <name>ax</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/local_ax</Dataref>
+        </variable>
+        <variable>
+            <name>ay</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/local_ay</Dataref>
+        </variable>
+        <variable>
+            <name>az</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/position/local_az</Dataref>
+        </variable>
+        <variable>
+            <name>verticalSpeed</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/gauges/indicators/vvi_fpm_pilot</Dataref>
+        </variable>
+    </simulinkBlock>
+
+    <simulinkBlock name = "steeringPlane" access = 'write'>
+        <variable>
+            <name>pitch</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/controls/yoke_pitch_ratio</Dataref>
+        </variable>
+        <variable>
+            <name>yaw</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/controls/yoke_heading_ratio</Dataref>
+        </variable>
+        <variable>
+            <name>roll</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/controls/yoke_roll_ratio</Dataref>
+        </variable>
+        <variable>
+            <name>throttle</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/engine/actuators/prop_ratio_all</Dataref>
+        </variable>
+    </simulinkBlock>
+
+    <simulinkBlock name = "pitch" access = 'write'>
+        <variable>
+            <name>pitch</name>
+            <type>float</type>
+            <Dataref>sim/cockpit2/controls/yoke_pitch_ratio</Dataref>
+        </variable>
+    </simulinkBlock>
+    
+</X-PlaneToSimulinkInterface>

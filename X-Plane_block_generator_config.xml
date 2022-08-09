@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <X-PlaneToSimulinkInterface>
-    <!--name - block name, access- specifiy whether your Simulink writes to X-Plane(write) or reads from X-Plane(read)-->
-    <simulinkBlock name = "IMU" access = 'read'>
+    <!--name- block name, access- specifiy whether your Simulink writes to X-Plane(write) or reads from X-Plane(read), updateRate- rate with which plugin will update data(in ms)-->
+    <simulinkBlock name = "IMU" access = 'read' updateRate = '10'>
         <variable>
             <name>p</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/P_rad</Dataref>
+            <Dataref>sim/flightmodel/position/Prad</Dataref>
         </variable>
         <variable>
             <name>q</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/Q_rad</Dataref>
+            <Dataref>sim/flightmodel/position/Qrad</Dataref>
         </variable>
         <variable>
             <name>r</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/R_rad</Dataref>
+            <Dataref>sim/flightmodel/position/Rrad</Dataref>
         </variable>
         <variable>
-            <name>ax</name>
+            <name>axial_acceleration</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/local_ax</Dataref>
+            <Dataref>sim/flightmodel/forces/g_axil</Dataref>
         </variable>
         <variable>
-            <name>ay</name>
+            <name>normal_acceleration</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/local_ay</Dataref>
+            <Dataref>sim/flightmodel/forces/g_nrml</Dataref>
         </variable>
         <variable>
-            <name>az</name>
+            <name>side_acceleration</name>
             <type>float</type>
-            <Dataref>sim/flightmodel/position/local_az</Dataref>
-        </variable>
-        <variable>
-            <name>verticalSpeed</name>
-            <type>float</type>
-            <Dataref>sim/cockpit2/gauges/indicators/vvi_fpm_pilot</Dataref>
+            <Dataref>sim/flightmodel/forces/g_side</Dataref>
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "steeringPlane" access = 'write'>
+    <simulinkBlock name = "Angles_real" access = 'read' updateRate = '100'>
         <variable>
             <name>pitch</name>
             <type>float</type>
-            <Dataref>sim/cockpit2/controls/yoke_pitch_ratio</Dataref>
+            <Dataref>sim/cockpit/gyros/the_ind_ahars_pilot_deg</Dataref>
         </variable>
         <variable>
-            <name>yaw</name>
+            <name>true_heading</name>
             <type>float</type>
-            <Dataref>sim/cockpit2/controls/yoke_heading_ratio</Dataref>
+            <Dataref>sim/flightmodel/position/psi</Dataref>
         </variable>
         <variable>
             <name>roll</name>
             <type>float</type>
-            <Dataref>sim/cockpit2/controls/yoke_roll_ratio</Dataref>
-        </variable>
-        <variable>
-            <name>throttle</name>
-            <type>float</type>
-            <Dataref>sim/cockpit2/engine/actuators/prop_ratio_all</Dataref>
+            <Dataref>sim/cockpit/gyros/phi_ind_ahars_pilot_deg</Dataref>
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "pitch" access = 'write'>
+    <simulinkBlock name = "GPS" access = 'read' updateRate = '1000'>
         <variable>
-            <name>pitch</name>
-            <type>float</type>
-            <Dataref>sim/cockpit2/controls/yoke_pitch_ratio</Dataref>
+            <name>lat</name>
+            <type>double</type>
+            <Dataref>sim/flightmodel/position/latitude</Dataref>
+        </variable>
+        <variable>
+            <name>lon</name>
+            <type>double</type>
+            <Dataref>sim/flightmodel/position/longitude</Dataref>
+        </variable>
+        <variable>
+            <name>elevation</name>
+            <type>double</type>
+            <Dataref>sim/flightmodel/position/elevation</Dataref>
         </variable>
     </simulinkBlock>
+
+    <simulinkBlock name = "Gravity" access = 'read' updateRate = '10'>
+        <variable>
+            <name>g</name>
+            <type>float</type>
+            <Dataref>sim/weather/gravity_mss</Dataref>
+        </variable>
+    </simulinkBlock>
+
     
 </X-PlaneToSimulinkInterface>

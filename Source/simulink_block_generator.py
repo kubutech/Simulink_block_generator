@@ -17,10 +17,12 @@ class Block:
     variables = []
     name = ''
     type = ''
+    updateRate = 0
 
-    def __init__(self, name, type):
+    def __init__(self, name, type, updateRate):
         self.name = name
         self.type = type
+        self.updateRate = int(updateRate)
 
     def putVariables(self, variables):
         self.variables = variables
@@ -33,7 +35,7 @@ root = tree.getroot()
 
 for child in root:
     if child.tag == 'simulinkBlock':
-        simulinkBlock = Block(child.get('name'), child.get('access'))
+        simulinkBlock = Block(child.get('name'), child.get('access'), child.get('updateRate'))
         variableList = []
         for var in child:
             try:

@@ -56,12 +56,14 @@ XPLMFlightLoopID loopFlightData;\n\
     with open(".\Plugin\Simulink_plugin.h", "w") as header:
         header.write(content)
 
-    content = "#pragma once\n\nfloat UpdateFlightData(float inElapsedSinceLastCall,\n\
-	float inElapsedTimeSinceLastFlightLoop,\n\
-	int inCounter,\n\
-	void* time)\n{\n"
+    content = "#pragma once\n\n"
 
     for block in blocksList:
+        content += "float {name}_loop(float inElapsedSinceLastCall,\n\
+	float inElapsedTimeSinceLastFlightLoop,\n\
+	int inCounter,\n\
+	void* time)\n\
+{{\n".format(name = block.name)
         if block.type == "write":
             content += "\tmemcpy(&{name}, {name}_Buf, sizeof({name}));\n\n\
     if ({name}.active > 0) {{\n".format(name = block.name)
@@ -73,11 +75,15 @@ XPLMFlightLoopID loopFlightData;\n\
             for var in block.variables:
                 content += "\t{name}.{varName} = XPLMGetData{type}({name}_Datarefs.{varName});\n".format(name = block.name, varName = var.name, type = var.type[0])
             content += "\n\
-    memcpy(PVOID({name}_Buf), &{name}, sizeof({name}));\n\n".format(name = block.name)
+\tmemcpy(PVOID({name}_Buf), &{name}, sizeof({name}));\n\n".format(name = block.name)
+        try:
+            content += "\treturn {updateRate};\n}}\n\n".format(updateRate = block.updateRate/1000)
+        except:
+            print("ds")
+            input()
+       
 
-    content += "\treturn 0.008;\n}\n\n"
-
-    content += "void FindDataRefs()\n{\n"
+    content += "void findDataRefs()\n{\n"
 
     for block in blocksList:
         for var in block.variables:
@@ -108,6 +114,20 @@ XPLMFlightLoopID loopFlightData;\n\
         content += "\tUnmapViewOfFile({name}_Buf);\n\
 	CloseHandle({name}_Handle);\n\n".format(name = block.name)
     
+    content += "}\n\n"
+
+    content += "void initializeFlightLoops()\n{\n"
+
+    for block in blocksList:
+        content += "\tXPLMRegisterFlightLoopCallback({name}_loop, 0.2, NULL);\n".format(name = block.name)
+    
+    content += "}\n\n"
+
+    content += "void closeFlightLoops()\n{\n"
+
+    for block in blocksList:
+        content += "\tXPLMUnregisterFlightLoopCallback({name}_loop, NULL);\n".format(name = block.name)
+
     content += "}"
     
     with open(".\Plugin\Simulink_plugin_functions.h","w") as functions:

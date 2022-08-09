@@ -34,7 +34,7 @@
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "Angles_real" access = 'read' updateRate = '100'>
+    <simulinkBlock name = "Angles_real" access = 'read' updateRate = '10'>
         <variable>
             <name>pitch</name>
             <type>float</type>
@@ -52,7 +52,7 @@
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "GPS" access = 'read' updateRate = '1000'>
+    <simulinkBlock name = "GPS" access = 'read' updateRate = '10'>
         <variable>
             <name>lat</name>
             <type>double</type>

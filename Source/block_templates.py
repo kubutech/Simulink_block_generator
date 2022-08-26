@@ -41,7 +41,9 @@ def matlabFile(block):
             end\n"
 
     else:
-        sys.exit("Wrong access field. Enter correct value (write/read)")
+        print("Wrong 'access' field. Enter correct value (write/read)")
+        input()
+        sys.exit()
 
 
     with open(matFilename, 'w') as matlab:
@@ -142,7 +144,9 @@ void update_{name}() {{\n\
 }}\n".format(name = block.name)
 
     else:
-        sys.exit("Wrong access field. Enter correct value (write/read)")
+        print("Wrong 'access' field. Enter correct value (write/read)")
+        input()
+        sys.exit()
 
     with open(cFilename,"w") as cSource:
         cSource.write("#include \"{name}.h\"\n\

@@ -42,13 +42,19 @@ for child in root:
                 if (var.find('type').text == 'float' or var.find('type').text == 'double' or var.find('type').text == 'int'):
                     variableList.append(Variable(name=var.find('name').text, type = var.find('type').text, dataref = var.find('Dataref').text))
                 else:
-                    sys.exit("Variable type wrong! (Remeber variable can only be float, double or int type)")
+                    print("Variable type wrong! (Remeber variable can only be float, double or int type)")
+                    input
+                    sys.exit()
             except Exception:
-                sys.exit("Wrong formating of 'variable' fields!")
+                print("Wrong formating of 'variable' fields!")
+                input()
+                sys.exit()
         simulinkBlock.putVariables(variableList)
         for block in blockList:
             if block.name == simulinkBlock.name:
-                sys.exit("Cannot have two blocks with the same name!")
+                print("Cannot have two blocks with the same name!")
+                input()
+                sys.exit()
         blockList.append(simulinkBlock)
 
 

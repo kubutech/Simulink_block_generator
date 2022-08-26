@@ -1,5 +1,14 @@
 import os
+import re
 import sys
+
+def var_size(type):
+    if type == 'float' or type == 'int':
+        return 4
+    elif type == 'double':
+        return 8
+    else:
+        return 0
 
 def plugin_template(blocksList):
     newpath = ".\\Plugin"
@@ -31,7 +40,16 @@ Str_{name} {name};\n\n".format(name = block.name)
     with open(".\\Plugin\\structTypeDefs.h","w") as structDefs:
             structDefs.write(content)
         
+    structSizes = []
 
+    for block in blocksList:
+            size = 0
+            for var in block.variables:
+                size += var_size(var.type)
+            
+            structSizes.append(size + 4)
+
+    max_size = max(structSizes)
 
     content = "#pragma once\n\
 #include <string.h>\n\
@@ -44,14 +62,14 @@ Str_{name} {name};\n\n".format(name = block.name)
 #include \"XPLMProcessing.h\"\n\
 #include \"structTypeDefs.h\"\n\
 \n\
-#define BUF_SIZE 64\n\
+#define BUF_SIZE {size}\n\
 \n\
 {varDefs}\
 \n\
 XPLMFlightLoopID loopDataref;\n\
 XPLMFlightLoopID loopFlightData;\n\
 \n\
-#include \"Simulink_plugin_functions.h\"".format(varDefs = varDefs)
+#include \"Simulink_plugin_functions.h\"".format(varDefs = varDefs, size = max_size)
 
     with open(".\Plugin\Simulink_plugin.h", "w") as header:
         header.write(content)
@@ -76,11 +94,8 @@ XPLMFlightLoopID loopFlightData;\n\
                 content += "\t{name}.{varName} = XPLMGetData{type}({name}_Datarefs.{varName});\n".format(name = block.name, varName = var.name, type = var.type[0])
             content += "\n\
 \tmemcpy(PVOID({name}_Buf), &{name}, sizeof({name}));\n\n".format(name = block.name)
-        try:
-            content += "\treturn {updateRate};\n}}\n\n".format(updateRate = block.updateRate/1000)
-        except:
-            print("ds")
-            input()
+        
+        content += "\treturn {updateRate};\n}}\n\n".format(updateRate = block.updateRate/1000)
        
 
     content += "void findDataRefs()\n{\n"

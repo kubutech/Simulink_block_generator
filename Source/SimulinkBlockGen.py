@@ -29,9 +29,13 @@ class Block:
 
 
 blockList = []
-
-tree = ET.parse('X-Plane_block_generator_config.xml')
-root = tree.getroot()
+try:
+    tree = ET.parse('SimulinkBlockGenConfig.xml')
+    root = tree.getroot()
+except:
+    print("Couldn't find configuration file. Make sure it's in the same directory as program!")
+    input()
+    sys.exit()
 
 for child in root:
     if child.tag == 'simulinkBlock':

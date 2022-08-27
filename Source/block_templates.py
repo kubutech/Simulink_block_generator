@@ -3,6 +3,14 @@ from statistics import variance
 import sys
 import os
 
+def var_size(type):
+    if type == 'float' or type == 'int':
+        return 4
+    elif type == 'double':
+        return 8
+    else:
+        return 0
+
 def matlabFile(block):
     newpath = ".\\{name}".format(name = block.name)
     if not os.path.exists(newpath):
@@ -192,9 +200,11 @@ def headerFile(block):
     headerFilename = '.\{name}\{name}.h'.format(name = block.name)
     interface = ''
     variables = ''
-    
+    size = 0
+
     for var in block.variables:
         variables += ', ' + var.type + ' ' + var.name
+        size += var_size(var.type)
 
     if block.type == 'write':
         interface += "void send_{name}({variables});\n".format(name = block.name, variables = variables[2::])
@@ -221,7 +231,7 @@ def headerFile(block):
 #include <stdio.h>\n\
 #include <stdbool.h>\n\
 \n\
-#define BUF_SIZE 64\n\
+#define BUF_SIZE {bufSize}\n\
 HANDLE {name}_Mapping;\n\
 LPCTSTR {name}_Buf;\n\
 TCHAR {name}_Name[] = TEXT(\"{name}\");\n\
@@ -233,4 +243,4 @@ void setup_{name}();\n\
 \n\
 {interface}\
 \n\
-void close_{name}();".format(struct = struct, name = block.name, interface = interface))
+void close_{name}();".format(struct = struct, name = block.name, interface = interface, bufSize = size + 4))

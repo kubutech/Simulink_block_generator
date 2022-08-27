@@ -40,16 +40,14 @@ Str_{name} {name};\n\n".format(name = block.name)
     with open(".\\Plugin\\structTypeDefs.h","w") as structDefs:
             structDefs.write(content)
         
-    structSizes = []
+    bufSizes = ''
 
     for block in blocksList:
             size = 0
             for var in block.variables:
                 size += var_size(var.type)
             
-            structSizes.append(size + 4)
-
-    max_size = max(structSizes)
+            bufSizes += "#define {name}_BUF_SIZE {size}\n".format(name = block.name, size = size + 4)
 
     content = "#pragma once\n\
 #include <string.h>\n\
@@ -62,14 +60,14 @@ Str_{name} {name};\n\n".format(name = block.name)
 #include \"XPLMProcessing.h\"\n\
 #include \"structTypeDefs.h\"\n\
 \n\
-#define BUF_SIZE {size}\n\
+{bufSizes}\n\
 \n\
 {varDefs}\
 \n\
 XPLMFlightLoopID loopDataref;\n\
 XPLMFlightLoopID loopFlightData;\n\
 \n\
-#include \"Simulink_plugin_functions.h\"".format(varDefs = varDefs, size = max_size)
+#include \"Simulink_plugin_functions.h\"".format(varDefs = varDefs, bufSizes = bufSizes)
 
     with open(".\Plugin\Simulink_plugin.h", "w") as header:
         header.write(content)
@@ -114,13 +112,13 @@ XPLMFlightLoopID loopFlightData;\n\
 		NULL,\n\
 		PAGE_READWRITE,\n\
 		0,\n\
-		BUF_SIZE,\n\
+		{name}_BUF_SIZE,\n\
 		{name}_Mapping);\n\n\
     {name}_Buf = (LPTSTR)MapViewOfFile({name}_Handle,\n\
 		FILE_MAP_ALL_ACCESS,\n\
 		0,\n\
 		0,\n\
-		BUF_SIZE);\n\n".format(name = block.name)
+		{name}_BUF_SIZE);\n\n".format(name = block.name)
 
     content += "}\n\n"
 

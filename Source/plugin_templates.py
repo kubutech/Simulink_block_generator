@@ -1,6 +1,4 @@
 import os
-import re
-import sys
 
 def var_size(type):
     if type == 'float' or type == 'int':
@@ -11,12 +9,8 @@ def var_size(type):
         return 0
 
 def plugin_template(blocksList):
-    newpath = ".\\Plugin"
     content = "#pragma once\n\n"
     varDefs = ''
-
-    if not os.path.exists(newpath):
-        os.makedirs(newpath)
     
     for block in blocksList:
         varDefs += "TCHAR {name}_Mapping[] = TEXT(\"{name}\");\n\
@@ -37,7 +31,7 @@ Str_{name} {name};\n\n".format(name = block.name)
         content += structsDataref + '\n'
         content += structs + '\n'
 
-    with open(".\\Plugin\\structTypeDefs.h","w") as structDefs:
+    with open(".\Simulink_plugin_source\include\structTypeDefs.h","w") as structDefs:
             structDefs.write(content)
         
     bufSizes = ''
@@ -69,7 +63,7 @@ XPLMFlightLoopID loopFlightData;\n\
 \n\
 #include \"Simulink_plugin_functions.h\"".format(varDefs = varDefs, bufSizes = bufSizes)
 
-    with open(".\Plugin\Simulink_plugin.h", "w") as header:
+    with open(".\Simulink_plugin_source\include\Simulink_plugin.h", "w") as header:
         header.write(content)
 
     content = "#pragma once\n\n"
@@ -143,5 +137,5 @@ XPLMFlightLoopID loopFlightData;\n\
 
     content += "}"
     
-    with open(".\Plugin\Simulink_plugin_functions.h","w") as functions:
+    with open(".\Simulink_plugin_source\include\Simulink_plugin_functions.h","w") as functions:
         functions.write(content)

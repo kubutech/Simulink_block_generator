@@ -1,5 +1,3 @@
-from operator import ge
-from statistics import variance
 import sys
 import os
 

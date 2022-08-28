@@ -34,7 +34,7 @@
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "Angles_real" access = 'read' updateRate = '10'>
+    <simulinkBlock name = "Angles" access = 'read' updateRate = '10'>
         <variable>
             <name>pitch</name>
             <type>float</type>
@@ -69,14 +69,5 @@
             <Dataref>sim/flightmodel/position/elevation</Dataref>
         </variable>
     </simulinkBlock>
-
-    <simulinkBlock name = "Gravity" access = 'read' updateRate = '10'>
-        <variable>
-            <name>g</name>
-            <type>float</type>
-            <Dataref>sim/weather/gravity_mss</Dataref>
-        </variable>
-    </simulinkBlock>
-
     
 </X-PlaneToSimulinkInterface>

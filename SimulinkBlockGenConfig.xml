@@ -52,7 +52,7 @@
         </variable>
     </simulinkBlock>
 
-    <simulinkBlock name = "GPS" access = 'read' updateRate = '10'>
+    <simulinkBlock name = "GPS" access = 'read' updateRate = '100'>
         <variable>
             <name>lat</name>
             <type>double</type>

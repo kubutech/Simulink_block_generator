@@ -18,19 +18,19 @@
             <Dataref>sim/flightmodel/position/Rrad</Dataref>
         </variable>
         <variable>
-            <name>axial_acceleration</name>
+            <name>ax</name>
             <type>float</type>
             <Dataref>sim/flightmodel/forces/g_axil</Dataref>
         </variable>
         <variable>
-            <name>normal_acceleration</name>
-            <type>float</type>
-            <Dataref>sim/flightmodel/forces/g_nrml</Dataref>
-        </variable>
-        <variable>
-            <name>side_acceleration</name>
+            <name>ay</name>
             <type>float</type>
             <Dataref>sim/flightmodel/forces/g_side</Dataref>
+        </variable>
+        <variable>
+            <name>az</name>
+            <type>float</type>
+            <Dataref>sim/flightmodel/forces/g_nrml</Dataref>
         </variable>
     </simulinkBlock>
 

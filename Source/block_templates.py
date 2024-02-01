@@ -157,6 +157,7 @@ void update_{name}() {{\n\
     with open(cFilename,"w") as cSource:
         cSource.write("#include \"{name}.h\"\n\
 \n\
+TCHAR {name}_Name[] = TEXT(\"{name}\");\n\
 \n\
 void setup_{name}()\n\
 {{\n\
@@ -232,7 +233,6 @@ def headerFile(block):
 #define BUF_SIZE {bufSize}\n\
 HANDLE {name}_Mapping;\n\
 LPCTSTR {name}_Buf;\n\
-TCHAR {name}_Name[] = TEXT(\"{name}\");\n\
 boolean {name}_isMapped;\n\
 \n\
 {struct}\
